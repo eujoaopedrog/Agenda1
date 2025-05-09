@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda | Psicóloga</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Dra. Ana Silva</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#" id="logoutBtn">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Container Principal -->
+    <main class="agenda-container">
+        <!-- Calendário -->
+        <section class="calendario-section">
+            <h2><i class="fas fa-calendar-alt"></i> Calendário</h2>
+            <div class="calendario-header">
+                <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                <h3 id="currentMonth">Outubro 2023</h3>
+                <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="calendario-grid" id="calendarioGrid">
+                <!-- Dias da semana e dias do mês serão gerados via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Horários Disponíveis -->
+        <section class="horarios-section">
+            <h2><i class="fas fa-clock"></i> Horários - <span id="selectedDate">Selecione um dia</span></h2>
+            <div class="horarios-list" id="horariosList">
+                <!-- Horários serão carregados dinamicamente -->
+            </div>
+
+            <!-- Modal de Confirmação -->
+            <div class="modal" id="confirmModal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3>Confirmar Agendamento</h3>
+                    <p id="modalText">Você está agendando para <strong>05/10/2023 às 14:00</strong>.</p>
+                    <p>Valor da consulta: <strong>R$ 150,00</strong></p>
+                    <button id="confirmBtn" class="btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>

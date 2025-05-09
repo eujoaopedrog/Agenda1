@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Psicóloga</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<body>
+    <!-- Background decorativo -->
+    <div class="login-decorative-circle"></div>
+    <div class="login-decorative-circle-2"></div>
+
+    <!-- Container principal -->
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="login-logo">
+            <i class="fas fa-brain"></i>
+            <span>Dra. Andreia Vieira</span>
+        </div>
+
+        <!-- Card de Login -->
+        <div class="login-card">
+            <h2>Bem-vindo de volta</h2>
+            <p>Acesse sua conta para agendar consultas</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="senha"><i class="fas fa-lock"></i> Senha</label>
+                    <div class="password-container">
+                        <input type="password" id="senha" placeholder="••••••••" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+
+            <div class="login-divider">
+                <span>ou</span>
+            </div>
+
+            <a href="index.html" class="back-to-home">
+                <i class="fas fa-arrow-left"></i> Voltar para a página inicial
+            </a>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="login-footer">
+            <p>Não tem conta? <a href="/cadastro.html" id="showRegister">Cadastre-se aqui</a></p>
+        </footer>
+    </div>
+
+    <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyD6h3UHMjBSY7WNSRp-rW5pjcl5EWSlMTA",
+        authDomain: "psicologa-agenda.firebaseapp.com",
+        projectId: "psicologa-agenda",
+        storageBucket: "psicologa-agenda.appspot.com",
+        messagingSenderId: "224208583343",
+        appId: "1:224208583343:web:1c12345b8e91a4b3a1725a"
+    };
+
+    // Inicializa o Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Toggle de visibilidade da senha
+    document.querySelector('.toggle-password').addEventListener('click', function() {
+        const senhaInput = document.getElementById('senha');
+        const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        senhaInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // Login com Firebase
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+        const loginBtn = document.querySelector('.login-btn');
+
+        try {
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            loginBtn.disabled = true;
+
+            await firebase.auth().signInWithEmailAndPassword(email, senha);
+            window.location.href = 'agenda.html';
+        } catch (error) {
+            alert('Erro no login: ' + error.message);
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+            loginBtn.disabled = false;
+        }
+    });
+
+    // Verificar se usuário já está logado
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = 'agenda.html';
+        }
+    });
+</script>
+</body>
+</html>

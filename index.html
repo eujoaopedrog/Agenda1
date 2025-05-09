@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicóloga | Bem-Estar Emocional</title>
+    <link rel="stylesheet" href="/styleprincipal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyD6h3UHMjBSY7WNSRp-rW5pjcl5EWSlMTA",
+          authDomain: "psicologa-agenda.firebaseapp.com",
+          projectId: "psicologa-agenda",
+          storageBucket: "psicologa-agenda.firebasestorage.app",
+          messagingSenderId: "224208583343",
+          appId: "1:224208583343:web:1c12345b8e91a4b3a1725a",
+          measurementId: "G-48Q1JGJ4VY"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+    <!-- Header/Navbar -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Dra. Andreia Vieira</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#testimonials">Depoimentos</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Liberando o fluxo do <span>amor em sua vida</span></h1>
+            <p>Você pode agora <span>dar o primeiro passo</span> para liberar o fluxo do amor em sua vida.</p>
+            <div class="hero-buttons">
+                <a href="login.html" class="btn-primary">Agende sua consulta</a>
+                <a href="#services" class="btn-secondary">Saiba mais</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="/assents/undraw_holding-flowers_jc03.svg" alt="Psicóloga">
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="services" class="services">
+        <h2>Como Posso Ajudar</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-heart"></i>
+                <h3>Ansiedade</h3>
+                <p>Técnicas para reduzir o estresse e controlar a ansiedade no dia a dia.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-regular fa-face-grin-hearts"></i>
+                <h3>Relacionamentos</h3>
+                <p>Melhore sua comunicação e conexão com parceiros, família e amigos.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-user-graduate"></i>
+                <h3>Autoestima</h3>
+                <p>Reconstrua sua confiança e aprenda a valorizar suas conquistas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="about" class="about">
+        <div class="about-image">
+            <img src="/assents/undraw_dev-focus_dd7i.svg" alt="Sessão de terapia">
+        </div>
+        <div class="about-content">
+            <h2>Sobre Mim</h2>
+            <p>Formada em Psicologia pela USP, com 10 anos de experiência em terapia cognitivo-comportamental. Acredito na terapia como um espaço seguro para crescimento pessoal.</p>
+            <ul class="about-list">
+                <li><i class="fas fa-check"></i> Atendimento humanizado</li>
+                <li><i class="fas fa-check"></i> Confidencialidade garantida</li>
+                <li><i class="fas fa-check"></i> Abordagem científica</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-brain"></i>
+                <span>Dra. Ana Silva</span>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2025 Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

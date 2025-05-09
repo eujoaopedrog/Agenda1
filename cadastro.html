@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | Psicóloga</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="/public/js/firebase-config.js"></script>
+<body>
+    <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    <!-- Background decorativo -->
+    <div class="decorative-circle"></div>
+    <div class="decorative-circle-2"></div>
+
+    <!-- Container principal -->
+    <div class="auth-container">
+        <!-- Logo -->
+        <div class="auth-logo">
+            <i class="fas fa-brain"></i>
+            <span>Dra. Andreia Vieira</span>
+        </div>
+
+        <!-- Card de Cadastro -->
+        <div class="auth-card">
+            <h2>Crie sua conta</h2>
+            <p>Preencha seus dados para agendar consultas</p>
+
+            <form id="registerForm">
+                <!-- Nome Completo -->
+                <div class="input-group">
+                    <label for="nome"><i class="fas fa-user"></i> Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Maria da Silva" required>
+                    <span class="validation-message" id="nomeValidation"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group">
+                    <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                    <span class="validation-message" id="emailValidation"></span>
+                </div>
+
+                <!-- Telefone -->
+                <div class="input-group">
+                    <label for="telefone"><i class="fas fa-phone"></i> Telefone</label>
+                    <input type="tel" id="telefone" placeholder="(11) 98765-4321" maxlength="15" required>
+                    <span class="validation-message" id="telefoneValidation"></span>
+                </div>
+
+                <!-- Data de Nascimento -->
+                <div class="input-group">
+                    <label for="nascimento"><i class="fas fa-calendar-day"></i> Data de Nascimento</label>
+                    <input type="date" id="nascimento" required>
+                    <span class="validation-message" id="nascimentoValidation"></span>
+                </div>
+
+                <!-- Senha -->
+                <div class="input-group">
+                    <label for="senha"><i class="fas fa-lock"></i> Senha</label>
+                    <div class="password-container">
+                        <input type="password" id="senha" placeholder="••••••••" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                    <div class="password-hint">
+                        <i class="fas fa-info-circle"></i> Mínimo 8 caracteres
+                    </div>
+                    <span class="validation-message" id="senhaValidation"></span>
+                </div>
+
+                <!-- Confirmação de Senha -->
+                <div class="input-group">
+                    <label for="confirmarSenha"><i class="fas fa-lock"></i> Confirmar Senha</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmarSenha" placeholder="••••••••" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                    <span class="validation-message" id="confirmarSenhaValidation"></span>
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>ou</span>
+            </div>
+
+            <div class="auth-footer">
+                <p>Já tem conta? <a href="login.html">Faça login</a></p>
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Importa a configuração do Firebase
+    import { db, auth, firebase } from '/public/js/firebase-config.js';
+
+    // Máscara de telefone
+    document.getElementById('telefone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0) {
+            value = '(' + value;
+            if (value.length > 3) {
+                value = value.slice(0,3) + ') ' + value.slice(3);
+                if (value.length > 10) {
+                    value = value.slice(0,10) + '-' + value.slice(10,14);
+                }
+            }
+        }
+        e.target.value = value;
+    });
+
+    // Toggle de visibilidade da senha
+    document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+
+    // Validação em tempo real
+    const validations = {
+        nome: (value) => value.length >= 3 ? '' : 'Nome deve ter no mínimo 3 caracteres',
+        email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Email inválido',
+        telefone: (value) => value.replace(/\D/g, '').length === 11 ? '' : 'Telefone inválido',
+        nascimento: (value) => {
+            const date = new Date(value);
+            const hoje = new Date();
+            return date && date < hoje ? '' : 'Data de nascimento inválida';
+        },
+        senha: (value) => value.length >= 8 ? '' : 'Senha deve ter no mínimo 8 caracteres',
+        confirmarSenha: (value) => value === document.getElementById('senha').value ? '' : 'Senhas não conferem'
+    };
+
+    Object.keys(validations).forEach(field => {
+        const input = document.getElementById(field);
+        const validation = document.getElementById(field + 'Validation');
+        
+        input.addEventListener('input', function() {
+            const error = validations[field](this.value);
+            validation.textContent = error;
+            validation.style.color = error ? '#FF6584' : '#4CAF50';
+        });
+    });
+
+    // Cadastro com Firebase
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const registerBtn = document.querySelector('.auth-btn');
+
+        // Validar todos os campos
+        let hasErrors = false;
+        Object.keys(validations).forEach(field => {
+            const error = validations[field](document.getElementById(field).value);
+            document.getElementById(field + 'Validation').textContent = error;
+            if (error) hasErrors = true;
+        });
+
+        if (hasErrors) {
+            alert('Por favor, corrija os erros no formulário');
+            return;
+        }
+
+        try {
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+            registerBtn.disabled = true;
+
+            // Criar usuário no Firebase Auth
+            const userCredential = await firebase.auth().createUserWithEmailAndPassword(
+                document.getElementById('email').value,
+                document.getElementById('senha').value
+            );
+
+            // Salvar dados adicionais no Firestore
+            await db.collection('usuarios').doc(userCredential.user.uid).set({
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value,
+                telefone: document.getElementById('telefone').value,
+                dataNascimento: document.getElementById('nascimento').value,
+                dataCadastro: new Date().toISOString()
+            });
+
+            alert('Cadastro realizado com sucesso!');
+            window.location.href = 'agenda.html';
+        } catch (error) {
+            alert('Erro no cadastro: ' + error.message);
+            registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Cadastrar';
+            registerBtn.disabled = false;
+        }
+    });
+
+    // Verificar se usuário já está logado
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = 'agenda.html';
+        }
+    });
+</script>
+</body>
+</html>
